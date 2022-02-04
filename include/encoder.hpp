@@ -17,6 +17,8 @@ public:
     double half;
     double half_d;
     int bp;
+    int div;
+    int unit;
     // bit precision including noise bit (lvl0param::T - bp is padding bit)
     // bp = (noise bit + plaintext precision bit)
 
@@ -48,8 +50,9 @@ public:
 
     Encoder(){};
 
-    Encoder(double a, double b, int bp)
+    Encoder(double a, double b, int bp, int div=0)
     {
+
         this->a = a;
         double tmp = b - a;
         this->b = b + tmp;
@@ -57,6 +60,9 @@ public:
         this->half_d = (this->b - this->a) / 2.;
         this->half = (this->b + this->a) / 2.;
         this->bp = bp;
+
+        this->div = div;
+        this->unit = b / div;
     }
 
     void update(double a, double b, int bp)
@@ -123,7 +129,12 @@ public:
     {
         double tmp_0_1 = this->txtod(x);
         tmp_0_1 = tmp_0_1 - floor(tmp_0_1);
-        return tmp_0_1 * this->d + this->a;
+        double tmp_0_2 = tmp_0_1 * this->d + this->a;
+
+        if (!div)
+            return tmp_0_2;
+        else 
+            return round(tmp_0_2 / unit) * unit;
     }
 };
 }  // namespace TFHEpp
