@@ -19,7 +19,7 @@ public:
     double max;
     int bp;
     int div;
-    int unit;
+    double unit;
     // bit precision including noise bit (lvl0param::T - bp is padding bit)
     // bp = (noise bit + plaintext precision bit)
 
@@ -132,9 +132,11 @@ public:
         double tmp_0_1 = this->txtod(x);
         tmp_0_1 = tmp_0_1 - floor(tmp_0_1);
         double tmp_0_2 = tmp_0_1 * this->d + this->a;
-        double tmp_0_3 = round(tmp_0_2 / unit) * unit;
 
-        return tmp_0_3;
+        if (div)
+            return round(tmp_0_2 / unit) * unit;
+        else
+            return tmp_0_2;
     }
 };
 }  // namespace TFHEpp
