@@ -16,6 +16,7 @@ public:
     double d;
     double half;
     double half_d;
+    double max;
     int bp;
     int div;
     int unit;
@@ -52,8 +53,9 @@ public:
 
     Encoder(double a, double b, int bp, int div=0)
     {
-
         this->a = a;
+        this->max = b;
+
         double tmp = b - a;
         this->b = b + tmp;
         this->d = this->b - this->a;
@@ -62,7 +64,7 @@ public:
         this->bp = bp;
 
         this->div = div;
-        this->unit = b / div;
+        this->unit = b / pow(2., div);
     }
 
     void update(double a, double b, int bp)
@@ -130,11 +132,9 @@ public:
         double tmp_0_1 = this->txtod(x);
         tmp_0_1 = tmp_0_1 - floor(tmp_0_1);
         double tmp_0_2 = tmp_0_1 * this->d + this->a;
+        double tmp_0_3 = round(tmp_0_2 / unit) * unit;
 
-        if (!div)
-            return tmp_0_2;
-        else 
-            return round(tmp_0_2 / unit) * unit;
+        return tmp_0_3;
     }
 };
 }  // namespace TFHEpp
